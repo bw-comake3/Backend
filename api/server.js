@@ -1,13 +1,15 @@
-const express = require('express')
+const express = require('express');
 
+const middlewareConfig = require('./middleware-config.js');
+const authRouter = require('../auth/auth-router.js');
 const server = express();
+middlewareConfig(server);
 
-const middleware = require('./middleware');
 
-middleware(server);
-
-server.get('/api', (req, res) => {
-  res.status(200).json({ server: "LISTENING" })
+server.get('/', (req, res) => {
+  res.status(200).json({ test: "LISTENING" })
 })
+
+server.use('/api/auth', authRouter)
 
 module.exports = server;
