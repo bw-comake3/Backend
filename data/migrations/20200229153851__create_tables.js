@@ -12,15 +12,15 @@ exports.up = function(knex) {
     .notNullable();
     tbl.string('description')
     .notNullable();
-    tbl.interger('vote');
+    tbl.integer('vote');
     tbl.string('city');
     tbl.string('zip');
     
-    tbl.interger('user_id')
+    tbl.integer('user_id')
         .unsigned()
         .notNullable()
-        .inTable('users')
         .references('id')
+        .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('CASCADE');
   })
