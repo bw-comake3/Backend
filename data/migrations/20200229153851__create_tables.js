@@ -12,7 +12,7 @@ exports.up = function(knex) {
     .notNullable();
     tbl.string('description')
     .notNullable();
-    tbl.integer('vote');
+    tbl.integer('vote').defaultTo(0);
     tbl.string('city').notNullable();
     tbl.string('zip');
     
