@@ -6,9 +6,9 @@ exports.seed = function(knex) {
 
       const userSeed = 
         [
-          { username: 'Nic', password: 'Test123', user_type: 'citizen' },
-          { username: 'Ammon', password: 'Test123', user_type: 'citizen' },
-          { username: 'Thomas', password: 'Test123', user_type: 'citizen' }
+          { username: 'Nic', password: 'Test123', user_type: 'user' },
+          { username: 'Ammon', password: 'Test123', user_type: 'user' },
+          { username: 'Thomas', password: 'Test123', user_type: 'user' }
         ]
       
       // Inserts seed entries
