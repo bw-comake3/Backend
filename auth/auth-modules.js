@@ -12,7 +12,7 @@ module.exports={
 // Users
 function getUsers() {
     return db('users')
-        .select('id', 'username', 'password')
+        .select('id', 'username')
 }
 
 function userLogin(user){

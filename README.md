@@ -8,9 +8,30 @@
 |[Local Server Installation](#Local-Server-Installation)|
 |[Authentication](#Authentication-Routes)|
 |[CRUD /issues](#Crud-Issues)|
-|[General](#General-Routes)|
+|[General Routes](#General-Routes)|
 |[Future Goals](#Future-Goals)|
+
 ---------------------------------
+
+
+## **Local Server Installation**
+For developing and testing puposes, please follow the instructions below to install a version to your local machine.
+
+Installing
+1. donwload/clone backend repo
+2. navigate to cloned repo
+3. install dependencies on your console: `npm i`
+4. construct a copy of the data base in console: `knex migrate:latest`*
+5. populate database with dummy/seeded data: `knex seed:run` *
+6. run the server: `npm run server`. Server port default is 5000.
+
+---------------------------------
+
+
+
+
+
+
 
 ## **Authentication Routes**
 
@@ -41,7 +62,7 @@ Response: `res.body`
 ### 2. User Login
 #### POST /api/auth/login
 
-Authenticates user's credentials. Returns JSON object with personalized welcomemessage and token.
+Authenticates user's credentials. Returns JSON object with personalized welcome message and token.
 
 Request: `req.body` 
 
@@ -198,6 +219,56 @@ Returns JSON object with user entered values, vote count, issue id and user_id f
 
 --------------------------------
 
+## General Routes
+
+### 1. Get Users
+#### **GET** */api/auth/users*
+
+Fetches all usernames and id# from database. No authentication required.
+
+Request: `req.body` 
+ 
+
+```
+// N/A
+```
+Response: `res.body`
+
+Returns an array of JSON objects.
+
+```
+[
+    {
+        "id": 2,
+        "username": "Ammon"
+    },
+    {
+        "id": 5,
+        "username": "Devoughn"
+    },
+    {
+        "id": 4,
+        "username": "Michael"
+    },
+    {
+        "id": 1,
+        "username": "Nic"
+    },
+    {
+        "id": 6,
+        "username": "TEST1"
+    },
+    {
+        "id": 3,
+        "username": "Thomas"
+    }
+]
+```
+
+
+[Return to Top](#coMake-backend)
+
+--------------------------------
 
 
 ## **Future Goals** 
