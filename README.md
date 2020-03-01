@@ -65,12 +65,16 @@ Response: `res.body`
 
 ## **CRUD /issues**
 
+A user **MUST** be authenticated in order to access the following end points. 
+
+User authentication token sent in `res.headers.authorization`
+
 ### 1. Default route
-#### **GET** */api/auth/issues*
+#### **GET** */api/issues*
 
 Return an array of objects of **ALL** issues created by **ALL** users.
 
-Request: `req.headers` 
+Request: `req.body` 
 
 ```
 // N/A
@@ -102,9 +106,11 @@ Response: `res.body`
 ```
 
 ### 2. Access single issue
-#### **GET** */api/auth/issues/:id*
+#### **GET** */api/issues/`:id`*
 
-Request: `req.headers` 
+Returns a single issue via the `:id` URL param.
+
+Request: `req.body` 
 
 ```
 // N/A
@@ -122,15 +128,69 @@ Response: `res.body`
 }
 ```
 
-### 2. Edit a specific issue
-#### **PUT** */api/auth/issues/:id*
+### 3. Edit a specific issue
+#### **PUT** */api/issues/`:id`*
 
+Updates an existing issue via the `:id` URL param. Currently, all users can edit all tickets. However, users should not be able to edit the issue's vote count, based on this operation. 
+
+
+Request: `req.body` 
+
+```
+{
+	"issue": "Rename the issue",
+	"description": "Edit and add to the previous description",
+	"city": "Correct the city", 
+	"zip": "Correct the zip"
+}
+```
+Response: `res.body`
+
+Returns JSON object with edited values.
+
+```
+{
+    "id": 2,            // this is the id# of the issue (NOT USER)
+    "issue": "New Issue Name",
+    "description": "There are EVEN MORE potholes in this road!",
+    "vote": 2,               
+    "city": "Miami2",
+    "zip": "123456",
+    "user_id": 2
+}
+```
 
 
 ### 4. Add new issue
-#### **GET** */api/auth/issues/*
+#### **POST** */api/issues/*
 
+Creates a new issue. Vote count defaults to 0. All fields in `res.body` are **required string types**. 
 
+Request: `req.body` 
+
+```
+{
+	"issue": "New Issue Name",
+	"description": "There are stray dogs roaming the streets!",
+	"city": "New City", 
+	"zip": "New Zip"
+}
+```
+Response: `res.body`
+
+Returns JSON object with user entered values, vote count, issue id and user_id fields.
+
+```
+{
+    "id": 2,            // this is the id# of the issue (NOT USER)
+    "issue": "New Issue Name",
+    "description": "There are stray dogs roaming the streets!",
+    "vote": 0,          // default value            
+    "city": "New City",
+    "zip": "New Zip",
+    "user_id": 2        // id of the user that created ticket
+}
+```
 
 
 
@@ -141,13 +201,16 @@ Response: `res.body`
 
 
 ## **Future Goals** 
+***(Features not yet supported)***
 
 - migrate to Postgres database
   - Back-end does not yet support image storage
   - admin users to remove completed "issue"
+  - restrict issues CRUD to be user specific
+  - comment features
 - retrieve an array of a user's own issues, e.g. GET /api/issues/mine
+- patch request to edit issues votes
 
-(Currently no support)
 
 [Return to Top](#coMake-backend)
 
