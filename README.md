@@ -21,8 +21,8 @@ Installing
 1. donwload/clone backend repo
 2. navigate to cloned repo
 3. install dependencies on your console: `npm i`
-4. construct a copy of the data base in console: `knex migrate:latest`*
-5. populate database with dummy/seeded data: `knex seed:run` *
+4. construct a copy of the data base in console: `knex migrate:latest`
+5. populate database with dummy/seeded data: `knex seed:run` 
 6. run the server: `npm run server`. Server port default is 5000.
 
 ---------------------------------
