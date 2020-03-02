@@ -5,9 +5,7 @@ module.exports = {
   development: {
     client: 'sqlite3',
     useNullAsDefault: true,
-    connection: {
-      filename: './data/comake.db3'
-    }, 
+    connection: '.data/comake.db3',
     migrations: {
       directory: './data/migrations'
     }, 
@@ -17,49 +15,37 @@ module.exports = {
   },
   testing: {
     client: 'sqlite3',
+    connection: { 
+      filename: './database/test.db3' 
+  },
     useNullAsDefault: true,
-    connection: {
-      filename: './data/cm_test.sqlite3'
-    },
     migrations: {
-      directory: './data/migrations'
-    }, 
-    seeds: {
-      directtory: './data/seeds'
-    }
+      directory: './database/migrations',
+    },
+    seeds: { directory: './database/seeds' },
   },
-
   staging: {
-    client: 'postgresql',
+    client: 'sqlite3',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      filename: './data/staging.db3',
     },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  },
-
-  production: {
-    client: 'pg',
-    connection: proccess.env.DATABASE_URL,
-    pool: {
-      min: 2,
-      max: 10
-    },
+    useNullAsDefault: true,
     migrations: {
       directory: './data/migrations',
-      tableName: 'knex_migrations'
     },
     seeds: {
-      directory:'./data/seeds',
-      tableName: 'knex_migrations'
-    }
+      directory: './data/seeds',
+    },
+  },
+  production: {
+    client: 'pg',
+    connection: process.env.DATABASE_URL,
+    migrations: {
+      directory: './data/migrations'
+    },
+    seeds: {
+      directory: './data/seeds'
+    },
   }
 
 };
