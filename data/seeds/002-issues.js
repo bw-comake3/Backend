@@ -1,7 +1,7 @@
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex('issues').truncate()
+  return knex('issues').del()
     .then(function () {
       const issuesSeed = [
         { issue: "issue1", description: "bla bla bla1", vote: 1, zip: "123456", city: "Miami1", user_id: 1 },

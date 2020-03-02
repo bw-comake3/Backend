@@ -9,12 +9,14 @@ exports.up = function(knex) {
   .createTable('issues', tbl => {
     tbl.increments();
     tbl.string('issue', 128)
-    .notNullable();
+        .notNullable();
     tbl.string('description')
-    .notNullable();
-    tbl.integer('vote').defaultTo(0);
-    tbl.string('city').notNullable();
-    tbl.string('zip');
+        .notNullable();
+    tbl.integer('vote')
+        .defaultTo(0);
+    tbl.string('city')
+        .notNullable();
+    tblno.string('zip');
     
     tbl.integer('user_id')
         .unsigned()
@@ -26,6 +28,7 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists('issues')
-        .dropTableIfExists('users')
+  return knex.schema
+    .dropTableIfExists('issues')
+    .dropTableIfExists('users')
 };
