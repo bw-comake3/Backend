@@ -1,7 +1,7 @@
 {
   "name": "backend",
-  "version": "12.16.1",
-  "description": "",
+  "version": "1.0.0",
+  "description": "comake-backend",
   "main": "index.js",
   "scripts": {
     "test": "jest --watch",
