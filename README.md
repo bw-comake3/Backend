@@ -7,7 +7,7 @@
 |-|
 |[Local Server Installation](#Local-Server-Installation)|
 |[Authentication](#Authentication-Routes)|
-|[CRUD /issues](#Crud-Issues)|
+|[CRUD /api](#Crud-Api)|
 |[General Routes](#General-Routes)|
 |[Future Goals](#Future-Goals)|
 
@@ -21,17 +21,12 @@ Installing
 1. donwload/clone backend repo
 2. navigate to cloned repo
 3. install dependencies on your console: `npm i`
-4. construct a copy of the data base in console: `knex migrate:latest`
-5. populate database with dummy/seeded data: `knex seed:run` 
-6. run the server: `npm run server`. Server port default is 5000.
+4. isntall knex globally: `npm i -g knex`
+5. construct a copy of the data base in console: `knex migrate:latest`
+6. populate database with dummy/seeded data: `knex seed:run` 
+7. run the server: `npm run server`. Server port default is 5000.
 
 ---------------------------------
-
-
-
-
-
-
 
 ## **Authentication Routes**
 
@@ -84,11 +79,13 @@ Response: `res.body`
 
 --------------------------------
 
-## **CRUD /issues**
+## **CRUD /api**
 
 A user **MUST** be authenticated in order to access the following end points. 
 
 User authentication token sent in `res.headers.authorization`
+
+*End-Point note: an id# before issues in URL signifies a user's id#, any :id after isses in URL signifies an issue's id*
 
 ### 1. Default route
 #### **GET** */api/issues*
@@ -126,10 +123,44 @@ Response: `res.body`
 ]
 ```
 
-### 2. Access single issue
-#### **GET** */api/issues/`:id`*
+### 2. Access all issues of single user
+#### **GET** */api/:id/issues/*
 
-Returns a single issue via the `:id` URL param.
+Returns all issues for a single user, via the **user's** `:id` URL param.
+
+Request: `req.body` 
+
+```
+// N/A
+```
+Response: `res.body`
+```
+[
+    {
+        "id": 2,            // this is the id# of the issue (NOT USER)
+        "issue": "issue2",
+        "description": "There are so many potholes in this road!",
+        "vote": 2,
+        "city": "Miami2",
+        "zip": "123456",
+        "user_id": 2        // All user_id for each issues are the same
+    }, 
+    {
+        "id": 20,            // this is the id# of the issue (NOT USER)
+        "issue": "issue20",
+        "description": "Too many drunkards!",
+        "vote": 200000,
+        "city": "Miami2",
+        "zip": "123456",
+        "user_id": 2        // All user_id for each issues are the same
+    }, 
+]
+```
+
+### 3. Access single issue
+#### **GET** */api/issues/:id*
+
+Returns a single issue via the **issue's** `:id` URL param.
 
 Request: `req.body` 
 
@@ -149,11 +180,10 @@ Response: `res.body`
 }
 ```
 
-### 3. Edit a specific issue
-#### **PUT** */api/issues/`:id`*
+### 4. Edit a specific issue
+#### **PUT** */api/issues/:id*
 
-Updates an existing issue via the `:id` URL param. Currently, all users can edit all tickets. However, users should not be able to edit the issue's vote count, based on this operation. 
-
+Updates an existing issue via the **issue's** `:id` URL param. Users should not be able to edit the issue's vote count, based on this operation. 
 
 Request: `req.body` 
 
@@ -181,11 +211,10 @@ Returns JSON object with edited values.
 }
 ```
 
+### 5. Add new issue
+#### **POST** */api/:id/issues/*
 
-### 4. Add new issue
-#### **POST** */api/issues/*
-
-Creates a new issue. Vote count defaults to 0. All fields in `res.body` are **required string types**. 
+User creates a new issue. Vote count defaults to 0. All fields in `res.body` are **required string types**. 
 
 Request: `req.body` 
 
@@ -279,7 +308,7 @@ Returns an array of JSON objects.
   - admin users to remove completed "issue"
   - restrict issues CRUD to be user specific
   - comment features
-- retrieve an array of a user's own issues, e.g. GET /api/issues/mine
+  - ~~retrieve an array of a user's own issues, e.g. GET /api/issues/mine~~
 - patch request to edit issues votes
 
 

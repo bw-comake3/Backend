@@ -14,7 +14,7 @@ router.get('/issues', (req, res) => {
     })    
 });
 
-// gets all users for single issue
+// gets all issues for single user
 router.get('/:id/issues', (req, res) => {
 
   const { id } = req.params;
