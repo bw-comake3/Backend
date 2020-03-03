@@ -19,13 +19,13 @@ function getIssues() {
 
 function getIssuesById(id) {
     return db('issues')
-      .select('id', 'issue', 'description', 'city', 'vote')
+      .select('id', 'issue', 'description', 'city', 'vote', 'user_id')
       .where( {id} )
       .first();
   }
 
 function addIssue(issue) {
-  return db('issues')
+  return db('issues as i')
     .insert(issue, 'id')
     .then(ids => {
       const [id] = ids;
@@ -52,8 +52,12 @@ function deleteIssue(id) {
 }
 
 function getIssuesFilter(filter){
-return db('issues as i')
-  .join('users as u', 'i.user_id', 'u.id')
-  .select('city', 'zip', 'issue', 'description', 'u.id')
-  .where(filter)
+return db('issues')
+  .select(
+    'city', 
+    'zip', 
+    'issue', 
+    'description', 
+    'user_id')
+  .where( 'user_id', filter)
 }
