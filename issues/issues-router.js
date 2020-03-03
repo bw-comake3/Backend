@@ -2,7 +2,8 @@ const router = require('express').Router();
 
 const issuesData = require('./issues-modules');
 
-router.get('/', (req, res) => {
+// gets all issues for all users
+router.get('/issues', (req, res) => {
   issuesData
     .getIssues()
     .then(issues => {
@@ -13,7 +14,24 @@ router.get('/', (req, res) => {
     })    
 });
 
-router.get('/:id', (req, res) => {
+// gets all users for single issue
+router.get('/:id/issues', (req, res) => {
+
+  const { id } = req.params;
+
+  issuesData
+    .getIssuesFilter(id)
+    .then(issues => {
+      res.status(200).json(issues)
+    })
+    .catch(({ name, message, code, stack }) => {
+      res.status(500).json({ name, message, code, stack })
+    })    
+});
+
+
+// gets single issue
+router.get('/issues/:id', (req, res) => {
   const { id } = req.params;
   
   issuesData
@@ -27,19 +45,24 @@ router.get('/:id', (req, res) => {
 
 })
 
-router.post('/', (req, res) => {
-  const issue = req.body
+// adds issue to database with user id
+router.post('/:id/issues/', (req, res) => {
+  
+  const { id } = req.params;
+  const issue = { ...req.body, user_id: id }
 
-  issuesData.addIssue(issue)
-  .then(issue => {
-    res.status(200).json(issue)
-  })
-  .catch(({ name, message, code, stack }) => {
-    res.status(500).json({ name, message, code, stack })
-  })  
+  issuesData
+    .addIssue(issue)
+    .then(issue => {
+      res.status(200).json(issue)
+    })
+    .catch(({ name, message, code, stack }) => {
+      res.status(500).json({ name, message, code, stack })
+    })  
 })
 
-router.put("/:id", (req, res) => {
+// edits single issue
+router.put("/issues/:id", (req, res) => {
   const { id } = req.params
   const changes = req.body
   issuesData.updateIssue(id, changes)
@@ -51,7 +74,8 @@ router.put("/:id", (req, res) => {
   }) 
 })
 
-router.delete("/:id", (req, res) => {
+// deletes an issue 
+router.delete("/issues/:id", (req, res) => {
   const { id } = req.params
   issuesData.deleteIssue(id)
   .then(issue => {

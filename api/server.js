@@ -15,6 +15,6 @@ server.get('/', (req, res) => {
 })
 
 server.use('/api/auth', authRouter)
-server.use('/api/issues', restricted, issuesRouter)
+server.use('/api', restricted, issuesRouter)
 
 module.exports = server;

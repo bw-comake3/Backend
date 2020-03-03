@@ -16,10 +16,11 @@ exports.up = function(knex) {
         .defaultTo(0);
     tbl.string('city')
         .notNullable();
-    tblno.string('zip');
+    tbl.string('zip');
     
     tbl.integer('user_id')
         .unsigned()
+        .notNullable()
         .references('id')
         .inTable('users')
         .onUpdate('CASCADE')
