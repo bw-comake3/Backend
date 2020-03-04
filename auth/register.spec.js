@@ -6,7 +6,7 @@ const server = require('../api/server.js');
 describe('Testing register endpoint', () => {
 
   beforeAll(async () => {
-    await db('users').truncate();
+    await db('users').del();
   })
 
   it('Return status of new user created', async () => {

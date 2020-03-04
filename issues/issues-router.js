@@ -10,7 +10,7 @@ router.get('/issues', (req, res) => {
       res.status(200).json(issues)
     })
     .catch(({ name, message, code, stack }) => {
-      res.status(500).json({ name, message, code, stack })
+      res.status(404).json({ name, message, code, stack })
     })    
 });
 
@@ -68,6 +68,20 @@ router.put("/issues/:id", (req, res) => {
   issuesData.updateIssue(id, changes)
   .then(issue => {
     res.status(200).json(issue)
+  })
+  .catch(({ name, message, code, stack }) => {
+    res.status(500).json({ name, message, code, stack })
+  }) 
+})
+
+// edits votes of isue
+router.patch("/issues/:id", (req, res) => {
+  const { id } = req.params
+  const vote = req.body
+  issuesData
+    .updateVote(id, vote)
+  .then(issue => {
+    res.status(200).json({ message: `Vote for Issue# ${id} Updated Successfully`, issue})
   })
   .catch(({ name, message, code, stack }) => {
     res.status(500).json({ name, message, code, stack })

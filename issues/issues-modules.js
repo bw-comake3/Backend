@@ -7,6 +7,7 @@ module.exports={
     getIssuesFilter,
     updateIssue,
     deleteIssue,
+    updateVote
     
 }
 
@@ -19,7 +20,7 @@ function getIssues() {
 
 function getIssuesById(id) {
     return db('issues')
-      .select('id', 'issue', 'description', 'city', 'vote', 'user_id')
+      .select('*')
       .where( {id} )
       .first();
   }
@@ -37,12 +38,28 @@ function updateIssue(id, changes){
     return db('issues')
     .where({id})
     .update(changes)
-    .then(ids => {
+    .then(() => {
         return db('issues')
-        .select('*')
-        .where( {id} )
+        .select('*')    
+        .first()    
+        .where({ id })
       })
 }
+
+function updateVote(id, changes){
+  return db('issues')
+  .where({id})
+  .update(changes)
+  .then(() => {
+      return db('issues')
+      .select('vote')
+      .first() 
+      .where({ id })
+    })
+}
+
+
+
 
 function deleteIssue(id) {
   return db('issues')
@@ -53,11 +70,6 @@ function deleteIssue(id) {
 
 function getIssuesFilter(filter){
 return db('issues')
-  .select(
-    'city', 
-    'zip', 
-    'issue', 
-    'description', 
-    'user_id')
+  .select('*')
   .where( 'user_id', filter)
 }
