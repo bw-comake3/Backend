@@ -4,6 +4,7 @@ const { jwtSecret } = require("../config/secrets.js");
 
 module.exports = (req, res, next) => {
     const { authorization } = req.headers;
+    const { id } = req.body
     const secret = jwtSecret;
     if(authorization){
         jwt.verify(authorization, secret, (err, decodedToken) => {
@@ -18,3 +19,7 @@ module.exports = (req, res, next) => {
         res.status(400).json({ message: 'no credentials provided'})
     }
 }
+
+
+// user id valid
+// ticket id valid

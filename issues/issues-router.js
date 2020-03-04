@@ -1,5 +1,6 @@
 const router = require('express').Router();
-
+const dbUsers = require('../auth/auth-modules');
+const dbIssues = require('./issues-modules');
 const issuesData = require('./issues-modules');
 
 // gets all issues for all users
@@ -31,7 +32,7 @@ router.get('/:id/issues', (req, res) => {
 
 
 // gets single issue
-router.get('/issues/:id', (req, res) => {
+router.get('/issues/:id', validateIssue, (req, res) => {
   const { id } = req.params;
   
   issuesData
@@ -46,7 +47,7 @@ router.get('/issues/:id', (req, res) => {
 })
 
 // adds issue to database with user id
-router.post('/:id/issues/', (req, res) => {
+router.post('/:id/issues/', validateUser, (req, res) => {
   
   const { id } = req.params;
   const issue = { ...req.body, user_id: id }
@@ -62,7 +63,7 @@ router.post('/:id/issues/', (req, res) => {
 })
 
 // edits single issue
-router.put("/issues/:id", (req, res) => {
+router.put("/issues/:id", validateUser, (req, res) => {
   const { id } = req.params
   const changes = req.body
   issuesData.updateIssue(id, changes)
@@ -99,5 +100,42 @@ router.delete("/issues/:id", (req, res) => {
     res.status(500).json({ name, message, code, stack })
   })
 })
+
+
+
+// Validation MiddleWare
+
+async function validateUser(req, res, next) {
+  // validates all POST requests for new ISSUE (not new user)
+  const { id } = req.params;
+  const issue = { ...req.body, user_id: id} ;  
+  console.log(`validate issue:`, issue)
+
+  const userCheck = await dbUsers.getUserById(id)
+
+    !userCheck
+    ? res.status(404).json({ message: "User does not exist!" }) 
+    : !issue ? 
+    res.status(404).json({ message: "Issue does not exist!" }) 
+    : !issue.issue || !issue.description
+    ? res.status(406).json({ message: "Please make sure issue name, and description fields are completed. " })
+    : next();
+}
+
+
+async function validateIssue(req, res, next) {
+  // validates all POST requests for new ISSUE (not new user)
+  const { id } = req.params;
+  const issue = req.body;  
+  console.log(`validate issue:`, issue)
+
+  const issueCheck = await dbIssues.getIssuesById(id)
+
+    !issueCheck
+    ? res.status(404).json({ message: "Issue does not exist!" }) 
+    : next();
+}
+
+
 
 module.exports = router;
