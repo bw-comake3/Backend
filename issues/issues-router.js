@@ -74,6 +74,20 @@ router.put("/issues/:id", (req, res) => {
   }) 
 })
 
+// edits votes of isue
+router.patch("/issues/:id", (req, res) => {
+  const { id } = req.params
+  const newVote = req.body
+  issuesData
+    .updateIssue(id, newVote)
+  .then(vote => {
+    res.status(200).json(vote)
+  })
+  .catch(({ name, message, code, stack }) => {
+    res.status(500).json({ name, message, code, stack })
+  }) 
+})
+
 // deletes an issue 
 router.delete("/issues/:id", (req, res) => {
   const { id } = req.params
