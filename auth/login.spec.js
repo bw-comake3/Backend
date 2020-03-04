@@ -42,12 +42,8 @@ describe('Testing login endpoint', () => {
         expect(response.body).toEqual({username:"jestTest1", password:"asdf"})
     })
 
-    it("should return an array of users",  function() {
-     return request(server).get("/api/auth/users")
-      .then(res => {
-        expect(Array.isArray(res.body)).toBe(true);      
-      })
+   
 
-    });
+    
 
   })

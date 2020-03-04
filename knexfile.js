@@ -1,52 +1,43 @@
-// Update with your config settings.
 require('dotenv').config()
 
 module.exports = {
-
   development: {
-    client: 'sqlite3',
+    client: 'pg',
     useNullAsDefault: true,
     connection: {
-      filename: './data/comake.db3'
-    }, 
+      host: "127.0.0.1",
+      port: "5432",
+      user: "postgres",
+      password: process.env.DB_PASSWORD,
+      database: "comake"
+    },    
     migrations: {
-      directory: './data/migrations'
+      directory: './data/migrations',
+      tableName: 'knex_migrations'
     }, 
     seeds:{
       directory: './data/seeds'
     }
   },
   testing: {
-    client: 'sqlite3',
+    client: 'pg',
     useNullAsDefault: true,
     connection: {
-      filename: './data/cm_test.sqlite3'
+      host: "127.0.0.1",
+      port: "5432",
+      user: "postgres",
+      password: process.env.DB_PASSWORD,
+      database: 'comake_test'
     },
     migrations: {
-      directory: './data/migrations'
+      directory: './data/migrations',
+      tableName: 'knex_migrations'
     }, 
     seeds: {
       directtory: './data/seeds'
     }
   },
-
-  staging: {
-    client: 'pg',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  },
-
-  production: {
+   production: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
     pool: {
@@ -54,11 +45,11 @@ module.exports = {
       max: 10
     },
     migrations: {
-      directory: './data/migrations'
+      directory: './data/migrations',
+      tableName: 'knex_migrations'
     },
     seeds: {
       directory: './data/seeds'
     }
   }
-
 };
