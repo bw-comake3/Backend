@@ -16,7 +16,7 @@ function getUsers() {
 }
 
 function userLogin(user){
-  return db('users').where(user)
+  return db('users').select('id', 'username').where(user)
 }
 
 function getUserById(id) {
