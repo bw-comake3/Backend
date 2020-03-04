@@ -211,7 +211,32 @@ Returns JSON object with edited values.
 }
 ```
 
-### 5. Add new issue
+### 5. Edit a specific issue
+#### **PATCH** */api/issues/:id*
+
+Updates the number of votes an existing issue has via the **issue's** `:id` URL param. 
+
+Request: `req.body` 
+
+```
+{
+	"vote": 1       // integer value
+}
+```
+Response: `res.body`
+
+Returns JSON object with edited values.
+
+```
+{
+    "message": "Vote for Issue# 4 Updated Successfully",
+    "issue": {
+        "vote": 2   // new value
+    }
+}
+```
+
+### 6. Add new issue
 #### **POST** */api/:id/issues/*
 
 User creates a new issue. Vote count defaults to 0. All fields in `res.body` are **required string types**. 

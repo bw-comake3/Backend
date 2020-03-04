@@ -63,7 +63,7 @@ router.post('/:id/issues/', validateUser, (req, res) => {
 })
 
 // edits single issue
-router.put("/issues/:id", validateUser, (req, res) => {
+router.put("/issues/:id", validateIssue, (req, res) => {
   const { id } = req.params
   const changes = req.body
   issuesData.updateIssue(id, changes)
@@ -76,7 +76,7 @@ router.put("/issues/:id", validateUser, (req, res) => {
 })
 
 // edits votes of isue
-router.patch("/issues/:id", (req, res) => {
+router.patch("/issues/:id", validateIssue, (req, res) => {
   const { id } = req.params
   const vote = req.body
   issuesData
@@ -118,10 +118,9 @@ async function validateUser(req, res, next) {
     : !issue ? 
     res.status(404).json({ message: "Issue does not exist!" }) 
     : !issue.issue || !issue.description
-    ? res.status(406).json({ message: "Please make sure issue name, and description fields are completed. " })
+    ? res.status(406).json({ message: "Please make sure the required fields are completed. " })
     : next();
 }
-
 
 async function validateIssue(req, res, next) {
   // validates all POST requests for new ISSUE (not new user)
