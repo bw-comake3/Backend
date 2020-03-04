@@ -211,7 +211,7 @@ Returns JSON object with edited values.
 }
 ```
 
-### 5. Edit a specific issue
+### 5. adjust an issue's vote
 #### **PATCH** */api/issues/:id*
 
 Updates the number of votes an existing issue has via the **issue's** `:id` URL param. 
@@ -331,10 +331,10 @@ Returns an array of JSON objects.
 - migrate to Postgres database
   - Back-end does not yet support image storage
   - admin users to remove completed "issue"
-  - restrict issues CRUD to be user specific
+  - ~~restrict issues CRUD to be user specific~~
   - comment features
   - ~~retrieve an array of a user's own issues, e.g. GET /api/issues/mine~~
-- patch request to edit issues votes
+- ~~patch request to edit issues votes~~
 
 
 [Return to Top](#coMake-backend)
