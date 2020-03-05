@@ -38,12 +38,10 @@ function updateIssue(id, changes){
     return db('issues')
     .where({id})
     .update(changes)
-    .then(() => {
-        return db('issues')
-        .select('*')    
-        .first()    
-        .where({ id })
-      })
+    .then(ids => {
+      const [id] = ids;
+      return getIssuesById(id); 
+    })
 }
 
 function updateVote(id, changes){
