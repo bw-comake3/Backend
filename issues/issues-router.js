@@ -68,6 +68,7 @@ router.put("/issues/:id", validateIssue, (req, res) => {
   const changes = { ...req.body}
   issuesData.updateIssue(id, changes)
   .then(issue => {
+    console.log(`this is ISSUE`, issue)
     res.status(200).json(issue)
   })
   .catch(({ name, message, code, stack }) => {
