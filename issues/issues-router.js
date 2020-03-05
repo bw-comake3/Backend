@@ -65,7 +65,7 @@ router.post('/:id/issues/', validateUser, (req, res) => {
 // edits single issue
 router.put("/issues/:id", validateIssue, (req, res) => {
   const { id } = req.params
-  const changes = req.body
+  const changes = { ...req.body}
   issuesData.updateIssue(id, changes)
   .then(issue => {
     res.status(200).json(issue)
@@ -79,7 +79,7 @@ router.put("/issues/:id", validateIssue, (req, res) => {
 router.patch("/issues/:id", validateIssue, (req, res) => {
 
   const { id } = req.params
-  const vote = { ...req.body}
+  const vote = req.body;
   issuesData
     .updateVote(id, vote)
   .then(issue => {
