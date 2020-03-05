@@ -18,42 +18,44 @@ function getIssues() {
     
 }
 
-function getIssuesById(id) {
-    return db('issues')
-      .select('*')
-      .where( {id} )
-      .first();
-  }
 
 function addIssue(issue) {
   return db('issues as i')
     .insert(issue, 'id')
     .then(ids => {
+      console.log(`ADD ISSUE`, ids)
       const [id] = ids;
       return getIssuesById(id)
     })
 }
 
-function updateIssue(id, changes){
-    return db('issues')
-    .where({id})
-    .update(changes)
-    .then(ids => {
-      const [id] = ids;
-      return getIssuesById(id); 
-    })
+
+function getIssuesById(id) {
+  return db('issues')
+    .select('*')
+    .where( {id} )
+    .first()
 }
 
-function updateVote(id, changes){
+async function updateIssue(id, changes){
+    await db('issues')
+      .where({id})
+      .update(changes)
+    
+    return getIssuesById(id)
+    
+}
+
+async function updateVote(id, changes){
+  await db('issues')
+    .where({id})
+    .update(changes)
+      
   return db('issues')
-  .where({id})
-  .update(changes)
-  .then(() => {
-      return db('issues')
       .select('vote')
-      .first() 
       .where({ id })
-    })
+      .first() 
+
 }
 
 

@@ -77,6 +77,7 @@ router.put("/issues/:id", validateIssue, (req, res) => {
 
 // edits votes of isue
 router.patch("/issues/:id", validateIssue, (req, res) => {
+  
   const { id } = req.params
   const vote = req.body
   issuesData
