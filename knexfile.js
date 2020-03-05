@@ -13,7 +13,7 @@ module.exports = {
     // },  
    
     connection: { // use this for for sqlite3 local dev
-      filename: './data/user.db3'
+      filename: './data/comake.db3'
 
     },    migrations: {
       directory: './data/migrations',

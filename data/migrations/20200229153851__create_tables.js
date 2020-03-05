@@ -6,6 +6,31 @@ exports.up = function(knex) {
     tbl.string('password', 256).notNullable();
     tbl.string('user_type');
   })
+
+.createTable('votes', tbl => {
+  tbl.primary(['user_id', 'issue_id'])
+
+  tbl.integer('user_id')
+    .unsigned()
+    .notNullable()
+    .references('id')
+    .inTable('users')
+    .onUpdate('CASCADE')
+    .onDelete('RESTRICT')
+
+  tbl.integer('issue_id')
+    .unsigned()
+    .notNullable()
+    .references('id')
+    .inTable('issues')
+    .onUpdate('CASCADE')
+    .onDelete('RESTRICT')
+
+  tbl.boolean('register_vote')
+    .defaultTo(0)
+})
+
+
   .createTable('issues', tbl => {
     tbl.increments();
     tbl.string('issue', 128)
