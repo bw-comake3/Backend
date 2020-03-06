@@ -22,13 +22,16 @@ module.exports = {
   testing: {
     client: 'pg',
     useNullAsDefault: true,
-    connection: {
-      host: "127.0.0.1",
-      port: "5300",
-      user: "postgres",
-      password: process.env.DB_PASSWORD,
-      database: 'comake_test'
-    },
+    connection:{
+      filename:'./data/comake.db3'
+    }
+    // connection: {
+    //   host: "127.0.0.1",
+    //   port: "5300",
+    //   user: "postgres",
+    //   password: process.env.DB_PASSWORD,
+    //   database: 'comake_test'
+    // },
     migrations: {
       directory: './data/migrations',
       tableName: 'knex_migrations'
