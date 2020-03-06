@@ -211,7 +211,32 @@ Returns JSON object with edited values.
 }
 ```
 
-### 5. Add new issue
+### 5. adjust an issue's vote
+#### **PATCH** */api/issues/:id*
+
+Updates the number of votes an existing issue has via the **issue's** `:id` URL param. 
+
+Request: `req.body` 
+
+```
+{
+	"vote": 1       // integer value
+}
+```
+Response: `res.body`
+
+Returns JSON object with edited values.
+
+```
+{
+    "message": "Vote for Issue# 4 Updated Successfully",
+    "issue": {
+        "vote": 2   // new value
+    }
+}
+```
+
+### 6. Add new issue
 #### **POST** */api/:id/issues/*
 
 User creates a new issue. Vote count defaults to 0. All fields in `res.body` are **required string types**. 
@@ -306,10 +331,10 @@ Returns an array of JSON objects.
 - migrate to Postgres database
   - Back-end does not yet support image storage
   - admin users to remove completed "issue"
-  - restrict issues CRUD to be user specific
+  - ~~restrict issues CRUD to be user specific~~
   - comment features
   - ~~retrieve an array of a user's own issues, e.g. GET /api/issues/mine~~
-- patch request to edit issues votes
+- ~~patch request to edit issues votes~~
 
 
 [Return to Top](#coMake-backend)

@@ -7,6 +7,7 @@ module.exports={
     getIssuesFilter,
     updateIssue,
     deleteIssue,
+    updateVote
     
 }
 
@@ -17,32 +18,48 @@ function getIssues() {
     
 }
 
-function getIssuesById(id) {
-    return db('issues')
-      .select('id', 'issue', 'description', 'city', 'vote', 'user_id')
-      .where( {id} )
-      .first();
-  }
 
 function addIssue(issue) {
   return db('issues as i')
     .insert(issue, 'id')
     .then(ids => {
+      console.log(`ADD ISSUE`, ids)
       const [id] = ids;
       return getIssuesById(id)
     })
 }
 
-function updateIssue(id, changes){
-    return db('issues')
+
+function getIssuesById(id) {
+  return db('issues')
+    .select('*')
+    .where( {id} )
+    .first()
+}
+
+async function updateIssue(id, changes){
+    await db('issues')
+      .where({id})
+      .update(changes)
+    
+    return getIssuesById(id)
+    
+}
+
+async function updateVote(id, changes){
+  await db('issues')
     .where({id})
     .update(changes)
-    .then(ids => {
-        return db('issues')
-        .select('*')
-        .where( {id} )
-      })
+      
+  return db('issues')
+      .select('vote')
+      .where({ id })
+      .first() 
+
 }
+
+
+
 
 function deleteIssue(id) {
   return db('issues')
@@ -53,11 +70,6 @@ function deleteIssue(id) {
 
 function getIssuesFilter(filter){
 return db('issues')
-  .select(
-    'city', 
-    'zip', 
-    'issue', 
-    'description', 
-    'user_id')
+  .select('*')
   .where( 'user_id', filter)
 }
