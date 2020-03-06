@@ -26,7 +26,7 @@ exports.up = function(knex) {
     .onUpdate('CASCADE')
     .onDelete('RESTRICT')
 
-  tbl.boolean('register_vote')
+  tbl.integer('register_vote')
     .defaultTo(0)
 })
 
@@ -56,5 +56,6 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return knex.schema
     .dropTableIfExists('issues')
+    .dropTableIfExists('votes')
     .dropTableIfExists('users')
 };
