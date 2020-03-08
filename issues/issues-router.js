@@ -1,14 +1,13 @@
 const router = require('express').Router();
 const dbUsers = require('../auth/auth-modules');
-const dbIssues = require('./issues-modules');
 const issuesData = require('./issues-modules');
 
 // gets all issues for all users
 router.get('/issues', (req, res) => {
   issuesData
     .getIssues()
-    .then(issues => {
-      res.status(200).json(issues)
+    .then(async issues => {
+      res.status(200).json(await Promise.all(issues))
     })
     .catch(({ name, message, code, stack }) => {
       res.status(404).json({ name, message, code, stack })
@@ -77,18 +76,39 @@ router.put("/issues/:id", validateIssue, (req, res) => {
 })
 
 // edits votes of isue
-router.patch("/issues/:id", validateIssue, (req, res) => {
+// router.put("/issues/:id", validateIssue, (req, res) => {
 
-  const { id } = req.params
-  const vote = req.body;
-  issuesData
-    .updateVote(id, vote)
-  .then(issue => {
-    res.status(200).json({ message: `Vote for Issue# ${id} Updated Successfully`, issue})
-  })
-  .catch(({ name, message, code, stack }) => {
-    res.status(500).json({ name, message, code, stack })
-  }) 
+//   const { id } = req.params
+//   const vote = req.body;
+//   issuesData
+//     .updateVote(id, vote)
+//   .then(issue => {
+//     res.status(200).json({ message: `Vote for Issue# ${id} Updated Successfully`, issue})
+//   })
+//   .catch(({ name, message, code, stack }) => {
+//     res.status(500).json({ name, message, code, stack })
+//   }) 
+// })
+
+router.put('/issues/:id/vote', validateUser, validateIssue, async (req, res) => {
+  const { id } = req.params;
+  const { user } = req;
+
+  try {
+    const vote =  await issuesData.getVote(id, user.id);
+
+    if (vote) {
+      await issuesData.deleteVote(id, user.id);
+      res.status(200).json({ message: 'deleted vote successfully' });
+    } else {
+      await issuesData.addVote(id, user.id);
+      res.status(200).json({ message: 'added vote successfully' });
+    }
+  } catch (err) {
+    console.err(err);
+    res.status(500).json({ error: err.message });
+  }
+
 })
 
 // deletes an issue 
@@ -114,6 +134,7 @@ async function validateUser(req, res, next) {
   console.log(`validate issue:`, issue)
 
   const userCheck = await dbUsers.getUserById(id)
+  req.user = userCheck;
 
     !userCheck
     ? res.status(404).json({ message: "User does not exist!" }) 
@@ -130,7 +151,7 @@ async function validateIssue(req, res, next) {
   const issue = req.body;  
   console.log(`validate issue:`, issue)
 
-  const issueCheck = await dbIssues.getIssuesById(id)
+  const issueCheck = await issuesData.getIssuesById(id)
 
     !issueCheck
     ? res.status(404).json({ message: "Issue does not exist!" }) 

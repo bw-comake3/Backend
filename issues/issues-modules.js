@@ -7,16 +7,25 @@ module.exports={
     getIssuesFilter,
     updateIssue,
     deleteIssue,
-    updateVote
-    
+    updateVote,
+    getVote,
+    deleteVote,
+    addVote
 }
 
 
 
-function getIssues() {
+async function getIssues() {
+  
   return db('issues')
-    
+          .then(issues => {
+            return issues.map(async issue => {
+              issue.voteCount = await getVoteCount(issue.id);
+              return issue;
+            })
+          })
 }
+
 
 
 function addIssue(issue) {
@@ -46,30 +55,46 @@ async function updateIssue(id, changes){
     
 }
 
-async function updateVote(id, changes){
-  await db('issues')
-    .where({id})
-    .update(changes)
-      
-  return db('issues')
-      .select('vote')
-      .where({ id })
-      .first() 
-
-}
-
-
-
-
 function deleteIssue(id) {
   return db('issues')
     .where("id", id)
     .delete()
-  
 }
 
 function getIssuesFilter(filter){
 return db('issues')
   .select('*')
   .where( 'user_id', filter)
+}
+
+
+// Votes
+
+function getVoteCount(issue_id) {
+  return db('votes')
+    .where({ issue_id })
+    .then(votes => {
+      return votes.length;
+    })
+}
+
+function getVote(issue_id, user_id) {
+  return db('votes')
+    .where({ issue_id, user_id }) 
+    .first()
+}
+
+
+function deleteVote(issue_id, user_id) {
+  return db('votes')
+    .where({ issue_id, user_id })
+    .delete();
+}
+
+function addVote(issue_id, user_id) {
+  return db('votes')
+    .insert({ issue_id, user_id })
+    .then(() => {
+      return getVote(issue_id, user_id) 
+    })
 }

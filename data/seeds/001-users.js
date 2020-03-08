@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 
 exports.seed = function(knex) {
 
-  return knex('users').del()
+  return knex('users').truncate()
     .then(function () {
 
       const userSeed = [

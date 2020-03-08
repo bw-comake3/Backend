@@ -8,6 +8,7 @@ describe('Testing register & Login endpoints', () => {
   beforeAll(async () => {
     await db('users').del();
   })
+  
  describe('Testing Register endpoints', () => {
 
    it('Return status of new user created', async () => {

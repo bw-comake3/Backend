@@ -24,12 +24,8 @@ exports.up = function(knex) {
     .references('id')
     .inTable('issues')
     .onUpdate('CASCADE')
-    .onDelete('RESTRICT')
-
-  tbl.integer('register_vote')
-    .defaultTo(0)
+    .onDelete('RESTRICT'); 
 })
-
 
   .createTable('issues', tbl => {
     tbl.increments();
@@ -37,12 +33,9 @@ exports.up = function(knex) {
         .notNullable();
     tbl.string('description')
         .notNullable();
-    tbl.integer('vote')
-        .defaultTo(0);
     tbl.string('city')
         .notNullable();
-    tbl.string('zip');
-    
+    tbl.string('zip');    
     tbl.integer('user_id')
         .unsigned()
         .notNullable()
